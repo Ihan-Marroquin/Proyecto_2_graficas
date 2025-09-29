@@ -1,5 +1,7 @@
 use raylib::prelude::*;
+// imports relacionados con escritura de archivos fueron removidos
 
+// Wrapper sencillo de framebuffer sobre raylib Image
 pub struct Framebuffer {
     width: u32,
     height: u32,
@@ -46,5 +48,8 @@ impl Framebuffer {
         }
     }
 
+    // write_png eliminado intencionalmente: comportamiento de captura removido.
+
+    #[allow(dead_code)]
     pub fn image(&self) -> &Image { &self.color_buffer }
 }
