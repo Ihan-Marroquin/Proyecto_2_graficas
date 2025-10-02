@@ -2,7 +2,7 @@
 
 Una escena estilo "Minecraft" en Rust: generador de diorama compuesto por cubos (capas), renderer por trazado de rayos simplificado y visualización con raylib.
 
-Este README resume cómo compilar y ejecutar el proyecto, las dependencias, controles de cámara, y notas sobre la escena (materiales y capas) para que sea fácil continuar desarrollándolo o integrarlo en un flujo de trabajo.
+Este README resume cómo compilar y ejecutar el proyecto, las dependencias, controles de cámara, y notas sobre la escena para que sea fácil continuar entender.
 
 ## Requisitos
 - Rust (estable) con cargo instalado.
@@ -45,27 +45,20 @@ cargo run --release
 - `src/bvh.rs` — builder e intersección BVH (estructura `BVH`, `build_bvh`, `intersect_bvh`).
 - `src/materials.rs` — fábricas de materiales (`material_grass`, `material_water`, `material_glass`, etc.).
 
-## Materiales del diorama
-El diorama está compuesto por cubos con diferentes materiales definidos en `src/materials.rs`. Cada material contiene propiedades como color difuso (`diffuse`), reflectividad y transparencia. Algunos materiales notables:
-- Grass (verde) — difuso (80,180,70)
-- Water (azul claro) — difuso (64,160,255) — usado para celdas de agua y gotas pequeñas
-- Glass — material translúcido para ventanas
-- Pillar/stone/darkwood — distintos tonos para pilares y madera oscura
-- Pumpkin — material decorativo
-
-La escena se genera por capas (capas representadas en el README):
-- Capa 1 - Suelo (y=0.5)
-- Capa 2 - Terrazas (y=1.5)
-- Capa 3 - Casa (y entre 2.5 y 3.5)
-- Capa 4 - Detalles (ornamentos, pilares)
-- Capa 5 - Grilla / detalles altos (y=4.5)
-
-Las capas se construyen de forma determinista (sin leer assets) y hay una opción para renderizar solo una capa usando `--layer N` en los argumentos (por ejemplo `cargo run --release -- --layer=3`).
-
-## Notas sobre texturas y capturas
-- Originalmente existía un gestor de texturas y captura a disco; esa funcionalidad fue eliminada intencionalmente y sustituida por muestreo simple (`sample_material` y `sample_sky`) para simplificar.
-
 ## Rendimiento
 - El render de rayos usa `rayon` para paralelizar el cálculo por pixel. El rendimiento dependerá de la resolución y del `render_scale` aplicado en el render (por defecto se reduce el tamaño de render interno para acelerar).
 - Prueba con `cargo run --release` y la ventana mostrará la escena en tiempo real; baja la resolución si necesitas más frames por segundo.
+ 
+## Texturas
+Se añadieron los siguientes activos en la carpeta `texturas/`:
+
+- `arriba_calabaza.png`
+- `calabaza.png`
+- `camino.png`
+- `camino_de_lado.png`
+- `cesped.png`
+- `cesped_de_lado.png`
+- `oakwood.png`
+- `pared_gris.png`
+- `pilar.png`
 
