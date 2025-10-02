@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 use nalgebra_glm as glm;
 
-use crate::ray_intersect::{Material, Intersect, RayIntersect};
+use crate::ray_intersect::{Material, Intersect, RayIntersect, FaceId};
 
 #[derive(Clone)]
 pub struct Cube {
@@ -108,7 +108,7 @@ impl RayIntersect for Cube {
         };
 
         let normal_world = Cube::rotate_y(&normal_local, self.rot_y);
-        let normal_world = glm::normalize(&normal_world);
+    let normal_world = glm::normalize(&normal_world);
 
         let hit_world = *ray_origin + *ray_dir * t_hit;
 
@@ -141,6 +141,15 @@ impl RayIntersect for Cube {
                 mat = top.clone();
             }
         }
-        Intersect::new(hit_world, normal_world, t_hit, mat, (u, v))
+
+        let face = if normal_local.x.abs() > 0.5 {
+            if normal_local.x > 0.0 { FaceId::Right } else { FaceId::Left }
+        } else if normal_local.y.abs() > 0.5 {
+            if normal_local.y > 0.0 { FaceId::Top } else { FaceId::Bottom }
+        } else if normal_local.z.abs() > 0.5 {
+            if normal_local.z > 0.0 { FaceId::Front } else { FaceId::Back }
+        } else { FaceId::Unknown };
+
+        Intersect::new(hit_world, normal_world, t_hit, mat, (u, v), face)
     }
 }

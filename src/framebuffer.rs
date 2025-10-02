@@ -1,4 +1,5 @@
 use raylib::prelude::*;
+use raylib::prelude::Texture2D;
 // imports relacionados con escritura de archivos fueron removidos
 
 // Wrapper sencillo de framebuffer sobre raylib Image
@@ -7,6 +8,7 @@ pub struct Framebuffer {
     height: u32,
     color_buffer: Image,
     current_color: Color,
+    cached_texture: Option<Texture2D>,
 }
 
 impl Framebuffer {
@@ -17,6 +19,7 @@ impl Framebuffer {
             height,
             color_buffer,
             current_color: Color::WHITE,
+            cached_texture: None,
         }
     }
 
@@ -41,14 +44,12 @@ impl Framebuffer {
         }
     }
 
-    pub fn present(&self, window: &mut RaylibHandle, thread: &RaylibThread, scale: f32) {
+    pub fn present(&mut self, window: &mut RaylibHandle, thread: &RaylibThread, scale: f32) {
         if let Ok(texture) = window.load_texture_from_image(thread, &self.color_buffer) {
             let mut d = window.begin_drawing(thread);
             d.draw_texture_ex(&texture, Vector2::new(0.0, 0.0), 0.0, scale, Color::WHITE);
         }
     }
-
-    // write_png eliminado intencionalmente: comportamiento de captura removido.
 
     #[allow(dead_code)]
     pub fn image(&self) -> &Image { &self.color_buffer }

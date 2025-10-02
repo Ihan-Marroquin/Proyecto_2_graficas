@@ -30,7 +30,6 @@ fn bbox_for_indices(objects: &[Cube], indices: &[usize], start: usize, count: us
     let mut bmax = glm::vec3(f32::NEG_INFINITY, f32::NEG_INFINITY, f32::NEG_INFINITY);
     for i in start..start+count {
         let obj = &objects[indices[i]];
-        // cube extents
         let ex = obj.half_size.x; let ey = obj.half_size.y; let ez = obj.half_size.z;
         let min = glm::vec3(obj.center.x - ex, obj.center.y - ey, obj.center.z - ez);
         let max = glm::vec3(obj.center.x + ex, obj.center.y + ey, obj.center.z + ez);

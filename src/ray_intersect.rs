@@ -2,6 +2,17 @@
 use nalgebra_glm::Vec3;
 use raylib::prelude::Color;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FaceId {
+    Right,
+    Left,
+    Top,
+    Bottom,
+    Front,
+    Back,
+    Unknown,
+}
+
 #[derive(Debug, Clone)]
 pub struct Material {
     pub diffuse: Color,
@@ -31,15 +42,16 @@ pub struct Intersect {
     pub normal: Vec3,
     pub point: Vec3,
     pub uv: (f32, f32),
+    pub face: FaceId,
 }
 
 impl Intersect {
-    pub fn new(point: Vec3, normal: Vec3, distance: f32, material: Material, uv: (f32,f32)) -> Self {
-        Intersect { distance, is_intersecting: true, material, normal, point, uv }
+    pub fn new(point: Vec3, normal: Vec3, distance: f32, material: Material, uv: (f32,f32), face: FaceId) -> Self {
+        Intersect { distance, is_intersecting: true, material, normal, point, uv, face }
     }
 
     pub fn empty() -> Self {
-        Intersect { distance: 0.0, is_intersecting: false, material: Material::new_color(Color::new(0, 0, 0, 255)), normal: Vec3::new(0.0,0.0,0.0), point: Vec3::new(0.0,0.0,0.0), uv: (0.0,0.0) }
+        Intersect { distance: 0.0, is_intersecting: false, material: Material::new_color(Color::new(0, 0, 0, 255)), normal: Vec3::new(0.0,0.0,0.0), point: Vec3::new(0.0,0.0,0.0), uv: (0.0,0.0), face: FaceId::Unknown }
     }
 }
 
